@@ -2,9 +2,9 @@
 
 hostname		cat /proc/version		cat /etc/issue
 uname -a		ps				env
-sudo -l		cat /etc/passwd		cat /etc/shadow
-history		ifconfig			netstat
-getcap		cat /etc/crontab		cat /etc/exports
+sudo -l			cat /etc/passwd			cat /etc/shadow
+history			ifconfig			netstat
+getcap			cat /etc/crontab		cat /etc/exports
 SUID files
 
 (
