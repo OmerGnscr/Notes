@@ -18,3 +18,5 @@ Simple Chat App using Python
 Simple PortScanner (Python)
 
 Simple-Weather-App
+
+Simple Linux Privilege Escalation
