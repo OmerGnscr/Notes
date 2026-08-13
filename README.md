@@ -1,3 +1,5 @@
+https://omergnscr.medium.com/
+
 This repo contains:
 
 
